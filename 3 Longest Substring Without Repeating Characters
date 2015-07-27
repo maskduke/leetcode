@@ -1,0 +1,57 @@
+/*
+Given a string, find the length of the longest substring without repeating characters. For example, the longest substring without repeating letters for "abcabcbb" is "abc", which the length is 3. For "bbbbb" the longest substring is "b", with the length of 1.
+
+Hide Tags Hash Table Two Pointers String
+Hide Similar Problems (H) Longest Substring with At Most Two Distinct Characters
+*/
+
+//Codes start from here
+
+//Two pointers + HashTable solution, slower one
+
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        int maxLen = 1, l = 0, r = 0;
+        Map<Character, Integer> myMap = new HashMap<Character, Integer>();
+        while (r < s.length()) {
+            if (myMap.containsKey(s.charAt(r)) && (int)myMap.get(s.charAt(r)) > 0) {
+                while (s.charAt(l) != s.charAt(r)) {
+                    myMap.put(s.charAt(l), (int)myMap.get(s.charAt(l))-1);
+                    ++l;
+                }
+                ++l;
+            }
+            myMap.put(s.charAt(r++), 1);
+            maxLen = Math.max(maxLen, r-l);
+        }
+        return maxLen;
+    }
+}
+
+
+//DP solution faster
+
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        //for ASCII formatted string, use 256 as buffer length
+        final int BUFFER_LEN = 256;
+        //buffer to record last show up
+        int[] cache = new int[BUFFER_LEN];
+        int max = 0,last = 0;
+        for (int i = 0; i < s.length(); i ++) {
+            char tmp = s.charAt(i);
+            if (cache[tmp] != 0) {
+                last = Math.max(cache[tmp], last);
+            }
+            cache[tmp] = i+1;
+            max = Math.max(max, i-last+1);
+        }
+        return max;
+    }
+}
