@@ -1,0 +1,75 @@
+/*
+Given a binary tree, return all root-to-leaf paths.
+
+For example, given the following binary tree:
+
+   1
+ /   \
+2     3
+ \
+  5
+All root-to-leaf paths are:
+
+["1->2->5", "1->3"]
+Credits:
+Special thanks to @jianchao.li.fighter for adding this problem and creating all test cases.
+
+Hide Tags Tree Depth-first Search
+Hide Similar Problems (M) Path Sum II
+
+*/
+
+//codes start from here
+// recursive method is trival, this is an iterative method
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> ret = new ArrayList<String>();
+        if (root == null) {
+            return ret;
+        }
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        stack.push(root);
+        final String mask = "->";
+        boolean first = true;
+        StringBuilder sb = new StringBuilder();
+        
+        while (!stack.isEmpty()) {
+            TreeNode current = stack.pop();
+            //System.out.println(current.val);
+            if (current.val == Integer.MIN_VALUE) {
+                //System.out.println(sb.lastIndexOf(mask) + "+" + sb.length() + "+" + sb.toString());
+                sb.delete(sb.lastIndexOf(mask),sb.length());
+                //System.out.println("new String" + sb.toString());
+                continue;
+            }
+            if(!first) {
+                sb.append(mask);
+            }
+            sb.append(current.val);
+            if (!first) {
+                stack.push(new TreeNode(Integer.MIN_VALUE));
+            }
+            first = false;
+            if (current.right != null) {
+                stack.push(current.right);
+            }
+            if (current.left != null) {
+                stack.push(current.left);
+            }
+            if (current.left == null && current.right == null) {
+                ret.add(sb.toString());
+            }
+        }
+        return ret;
+    }
+}
