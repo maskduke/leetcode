@@ -1,0 +1,40 @@
+/*
+Write a program to check whether a given number is an ugly number.
+
+Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 6, 8 are ugly while 14 is not ugly since it includes another prime factor 7.
+
+Note that 1 is typically treated as an ugly number.
+
+Credits:
+Special thanks to @jianchao.li.fighter for adding this problem and creating all test cases.
+
+Hide Tags Math
+Hide Similar Problems (E) Happy Number (E) Count Primes (M) Ugly Number II
+*/
+
+//codes start from here
+public class Solution {
+    public boolean isUgly(int num) {
+        if (num < 1) {
+            return false;
+        }
+        int current = num;
+        long last = num+1;
+        while (current < last) {
+            last = current;
+            if (current%2 == 0) {
+                current /= 2;
+            }
+            if (current%3 == 0) {
+                current /= 3;
+            }
+            if (current%5 == 0) {
+                current /= 5;
+            }
+            if (current < 6) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
