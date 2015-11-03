@@ -19,3 +19,38 @@ Subscribe to see which companies asked this question
 Hide Tags Dynamic Programming Heap Math
 Hide Similar Problems (H) Merge k Sorted Lists (E) Count Primes (E) Ugly Number (M) Perfect Squares
 */
+
+//Codes start from here
+public class Solution {
+
+    static List<Integer> cache = new ArrayList<Integer>();
+    static int index2 = 0, index3 = 0, index5 = 0;
+    
+	public int nthUglyNumber(int n) {
+        if (n < 1) {
+            return 0;
+        }
+        if (n < cache.size()) {
+            return cache.get(n-1);
+        }
+        if (cache.size() == 0) {
+            cache.add(1);
+        }
+        int index = cache.size()-1, ith = 1;
+        while (index < n-1) {
+            ith = Math.min((cache.get(index2)<Integer.MAX_VALUE/2)?cache.get(index2)*2:Integer.MAX_VALUE, Math.min((cache.get(index3)<Integer.MAX_VALUE/3)?cache.get(index3)*3:Integer.MAX_VALUE, (cache.get(index5)<Integer.MAX_VALUE/5)?cache.get(index5)*5:Integer.MAX_VALUE));
+            cache.add(ith);
+            if (ith/2 == cache.get(index2)) {
+                index2++;
+            }
+            if (ith/3 == cache.get(index3)) {
+                index3++;
+            }
+            if (ith/5 == cache.get(index5)) {
+                index5++;
+            }
+            index++;
+        }
+        return ith;
+    }
+}
